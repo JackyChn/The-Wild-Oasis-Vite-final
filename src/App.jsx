@@ -15,7 +15,7 @@ import PageNotFound from "./pages/PageNotFound";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: 60 * 1000, // 60000 seconds
+      staleTime: 60 * 1000, // 60 seconds
     },
   },
 });

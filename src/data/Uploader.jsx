@@ -118,6 +118,12 @@ function Uploader() {
     setIsLoading(false);
   }
 
+  async function insertCabins() {
+    setIsLoading(true);
+    await createCabins();
+    setIsLoading(false);
+  }
+
   async function uploadBookings() {
     setIsLoading(true);
     await deleteBookings();
@@ -142,6 +148,10 @@ function Uploader() {
 
       <Button onClick={uploadAll} disabled={isLoading}>
         Upload ALL
+      </Button>
+
+      <Button onClick={insertCabins} disabled={isLoading}>
+        Insert Cabins
       </Button>
 
       <Button onClick={uploadBookings} disabled={isLoading}>
