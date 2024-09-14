@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabinById } from "../../../services/apiCabins";
+import deleteCabinById from "../../services/apiCabins";
 import toast from "react-hot-toast";
 
 export function useDeleteCabin() {

@@ -3,7 +3,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import CreateCabinForm from "./CreateCabinForm";
-import { useDeleteCabin } from "./CRUD hooks/useDeleteCabin";
+import { useDeleteCabin } from "../../hooks/CRUD hooks/useDeleteCabin";
 
 const TableRow = styled.div`
   display: grid;

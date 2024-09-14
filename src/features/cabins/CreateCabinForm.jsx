@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useInsertCabin } from "./CRUD hooks/useInsertCabin";
-import { useEditCabin } from "./CRUD hooks/useEditCabin";
+import { useInsertCabin } from "../../hooks/CRUD hooks/useInsertCabin";
+import { useEditCabin } from "../../hooks/CRUD hooks/useEditCabin";
 import PropTypes from "prop-types";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
