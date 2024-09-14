@@ -7,8 +7,9 @@ export function useSettingsQuery() {
     data: settings,
     error,
   } = useQuery({
-    queryKey: "settings",
+    queryKey: ["settings"],
     queryFn: getSettings,
   });
+
   return { isLoading, settings, error };
 }

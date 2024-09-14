@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
-import { useCabinQuery } from "../../hooks/useQuery hook/useCabinQuery";
+import { useCabinQuery } from "../../hooks/useQuery hooks/useCabinQuery";
 
 const Table = styled.div`
   border: 1px solid var(--color-grey-200);
