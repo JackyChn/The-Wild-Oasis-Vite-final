@@ -29,11 +29,10 @@ function CreateCabinForm() {
   // useForm here
   const { register, handleSubmit, reset, getValues, formState } = useForm(); // 1. call useForm hook
   const { errors } = formState;
-  console.log(errors);
   const submit = (data) => {
     // 4. and we will get the data and do something
-    console.log({ ...data, image: data.image.at(0) });
-    // mutate(data);
+    // console.log({ ...data, image: data.image[0] });
+    mutate({ ...data, image: data.image[0] });
   };
   return (
     // 3. button click event call this onSubmit function, which calls the handleSubmt with customized submit in it, and the onError will be called if any Input is illegal
