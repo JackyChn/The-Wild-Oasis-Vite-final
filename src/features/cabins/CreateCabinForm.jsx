@@ -95,8 +95,10 @@ function CreateCabinForm({ cabinToEdit = {} }) {
             required: "Discount cannot be empty!",
             validate: (value) => {
               // getValues returns all date in the from, which is an object, so use regularPrice
-              value <= getValues().regularPrice ||
-                "Discount should be less that price!";
+              return (
+                value <= getValues().regularPrice ||
+                "Discount should be less that price!"
+              );
             },
           })}
         />
