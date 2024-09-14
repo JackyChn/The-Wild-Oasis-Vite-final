@@ -5,6 +5,10 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
+import { useForm } from "react-hook-form";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { createCabin } from "../../services/apiCabins";
+import toast from "react-hot-toast";
 
 const FormRow = styled.div`
   display: grid;
@@ -43,31 +47,108 @@ const Error = styled.span`
 `;
 
 function CreateCabinForm() {
+  const queryClient = useQueryClient();
+  // useMutation here
+  const { isLoading: isInserting, mutate } = useMutation({
+    mutationFn: createCabin,
+    onSuccess: () => {
+      toast.success("New Cabin successfully added!");
+      queryClient.invalidateQueries({
+        queryKey: ["cabins"],
+      });
+      reset();
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  // useForm here
+  const { register, handleSubmit, reset, getValues, formState } = useForm(); // 1. call useForm hook
+  const { errors } = formState;
+  console.log(errors);
+  const submit = (data) => {
+    // 4. and we will get the data and do something
+    // console.log(data);
+    mutate(data);
+  };
+  // const onError = (errors) => {
+  //   // console.log(errors);
+  // };
   return (
-    <Form>
+    // 3. button click event call this onSubmit function, which calls the handleSubmt with customized submit in it, and the onError will be called if any Input is illegal
+    <Form onSubmit={handleSubmit(submit)}>
       <FormRow>
         <Label htmlFor="name">Cabin name</Label>
-        <Input type="text" id="name" />
+        <Input
+          type="text"
+          id="name"
+          // 2. setup what needs to be registered
+          {...register("name", { required: "Name cannot be empty!" })}
+        />
+        {/* handle error message if exsits and show Error */}
+        {errors?.name?.message && <Error>{errors.name.message}</Error>}
       </FormRow>
 
       <FormRow>
         <Label htmlFor="maxCapacity">Maximum capacity</Label>
-        <Input type="number" id="maxCapacity" />
+        <Input
+          type="number"
+          id="maxCapacity"
+          // 2. setup what needs to be registered
+          {...register("maxCapacity", {
+            // setup validation in the sec position
+            required: "Capacity cannot be empty!",
+            min: {
+              value: 1,
+              message: "Capacity should be at least 1!",
+            },
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="regularPrice">Regular price</Label>
-        <Input type="number" id="regularPrice" />
+        <Input
+          type="number"
+          id="regularPrice"
+          // 2. setup what needs to be registered
+          {...register("regularPrice", {
+            min: { value: 100, message: "Price cannot be less than 100" },
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="discount">Discount</Label>
-        <Input type="number" id="discount" defaultValue={0} />
+        <Input
+          type="number"
+          id="discount"
+          defaultValue={0}
+          // 2. setup what needs to be registered
+          {...register("discount", {
+            required: "Discount cannot be empty!",
+            validate: (value) => {
+              return (
+                value <= getValues().regularPrice || // getValues returns all date in the from, which is an object, so use regularPrice
+                "Discount should be less that price!"
+              );
+            },
+          })}
+        />
       </FormRow>
 
       <FormRow>
         <Label htmlFor="description">Description for website</Label>
-        <Textarea type="number" id="description" defaultValue="" />
+        <Textarea
+          type="number"
+          id="description"
+          defaultValue=""
+          // 2. setup what needs to be registered
+          {...register("description", {
+            required: "Description cannot be empty!",
+          })}
+        />
       </FormRow>
 
       <FormRow>
@@ -80,7 +161,7 @@ function CreateCabinForm() {
         <Button variation="secondary" type="reset">
           Cancel
         </Button>
-        <Button>Edit cabin</Button>
+        <Button disabled={isInserting}>Add cabin</Button>
       </FormRow>
     </Form>
   );
