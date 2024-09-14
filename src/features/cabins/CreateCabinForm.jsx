@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createEditCabin } from "../../services/apiCabins";
+import { useInsertCabin } from "./CRUD hooks/useInsertCabin";
+import { useEditCabin } from "./CRUD hooks/useEditCabin";
 import PropTypes from "prop-types";
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -8,8 +8,6 @@ import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
-import { useInsertCabin } from "./CRUD hooks/useInsertCabin";
-import { useEditCabin } from "./CRUD hooks/useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
@@ -23,9 +21,9 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
   // useMutation here, for inserting new cabin
   // insert mutation
-  const { isInserting, createCabin } = useInsertCabin({ reset });
+  const { isInserting, createCabin } = useInsertCabin();
   // edit mutation
-  const { isEditing, editCabin } = useEditCabin({ reset });
+  const { isEditing, editCabin } = useEditCabin();
 
   const isWorking = isInserting || isEditing;
 
@@ -37,8 +35,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
         : cabinData.image[0];
     console.log(cabinData);
     if (isEditSession)
-      editCabin({ newCabin: { ...cabinData, image }, id: editId });
-    else createCabin({ ...cabinData, image: image });
+      editCabin(
+        { newCabin: { ...cabinData, image }, id: editId },
+        { onSuccess: reset() }
+      );
+    else createCabin({ ...cabinData, image: image }, { onSuccess: reset() });
   };
   return (
     // 3. button click event call this onSubmit function, which calls the handleSubmt with customized submit in it, and the onError will be called if any Input is illegal
