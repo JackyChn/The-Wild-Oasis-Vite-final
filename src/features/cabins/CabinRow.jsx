@@ -1,10 +1,7 @@
 import { formatCurrency } from "../../utils/helpers";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { deleteCabinById } from "../../services/apiCabins";
 import { useState } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import toast from "react-hot-toast";
 import CreateCabinForm from "./CreateCabinForm";
 import { useDeleteCabin } from "./CRUD hooks/useDeleteCabin";
 

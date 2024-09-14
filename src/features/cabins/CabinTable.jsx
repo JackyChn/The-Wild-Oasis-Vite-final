@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
-import getCabins from "../../services/apiCabins";
 import Spinner from "../../ui/Spinner";
 import CabinRow from "./CabinRow";
 import { useCabinQuery } from "./CRUD hooks/useCabinQuery";
@@ -30,7 +28,7 @@ const TableHeader = styled.header`
 `;
 
 function CabinTable() {
-  const { isLoading, cabins, error } = useCabinQuery();
+  const { isLoading, cabins } = useCabinQuery();
   if (isLoading) return <Spinner />;
   return (
     <Table role="table">
