@@ -7,51 +7,27 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
-import toast from "react-hot-toast";
 import FormRow from "../../ui/FormRow";
+import { useInsertCabin } from "./CRUD hooks/useInsertCabin";
+import { useEditCabin } from "./CRUD hooks/useEditCabin";
 
 function CreateCabinForm({ cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
-  const queryClient = useQueryClient();
-  // useMutation here, for inserting new cabin
-  // insert mutation
-  const { isLoading: isInserting, mutate: createCabin } = useMutation({
-    mutationFn: (newCabin) => createEditCabin(newCabin),
-    onSuccess: () => {
-      toast.success("New Cabin successfully added!");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
-  // edit mutation
-  const { isLoading: isEditing, mutate: editCabin } = useMutation({
-    mutationFn: ({ newCabin, id }) => createEditCabin(newCabin, id),
-    onSuccess: () => {
-      toast.success("Cabin edit successfully!");
-      queryClient.invalidateQueries({
-        queryKey: ["cabins"],
-      });
-      reset();
-    },
-    onError: (error) => {
-      toast.error(error.message);
-    },
-  });
-
-  const isWorking = isInserting || isEditing;
 
   // // 1. call useForm hook here
   const { register, handleSubmit, reset, getValues, formState } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
   const { errors } = formState;
+
+  // useMutation here, for inserting new cabin
+  // insert mutation
+  const { isInserting, createCabin } = useInsertCabin({ reset });
+  // edit mutation
+  const { isEditing, editCabin } = useEditCabin({ reset });
+
+  const isWorking = isInserting || isEditing;
 
   const submit = (cabinData) => {
     // 4. and we will get the data and do something
@@ -166,7 +142,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 }
 
 CreateCabinForm.propTypes = {
-  cabinToEdit: PropTypes.object.isRequired,
+  cabinToEdit: PropTypes.object,
 };
 
 export default CreateCabinForm;
