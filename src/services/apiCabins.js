@@ -13,28 +13,28 @@ export default async function getCabins() {
 export async function createCabin(newCabin) {
   // https://cfhtzhgqirdokoimzrtg.supabase.co/storage/v1/object/public/cabin-images/cabin-004.jpg
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
-    // removes any / characters in the image name to prevent issues with file paths
     "/",
     ""
   );
   const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
   // 1. create cabin
-  const { data, error } = await supabase
+
+  const { data: cabinData, error: insertCabinError } = await supabase
     .from("cabins")
     .insert([{ ...newCabin, image: imagePath }])
     .select();
-  if (error) {
-    throw new Error("Cabin cannot be inserted");
-  }
+  if (insertCabinError) throw new Error("New cabin cannot be inserted!");
 
   // 2. no error, then upload the image
-  const { error: storageError } = await supabase.storage
-    .from("cabin-images") // bucket name
+  const { error: uploadImageError } = await supabase.storage
+    .from("cabin-images")
     .upload(imageName, newCabin.image);
-  // 3. delete the cabin if there's an error uploading image
-  if (storageError) await supabase.from("cabins").delete().eq("id", data.id);
 
-  return data;
+  // 3. delete the cabin if there's an error uploading image
+  if (uploadImageError)
+    await supabase.from("cabins").delete().eq("id", cabinData.id);
+
+  return cabinData;
 }
 
 export async function deleteCabinById(id) {

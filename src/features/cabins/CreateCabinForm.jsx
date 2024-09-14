@@ -31,7 +31,7 @@ function CreateCabinForm() {
   const { errors } = formState;
   const submit = (data) => {
     // 4. and we will get the data and do something
-    // console.log({ ...data, image: data.image[0] });
+    console.log(data);
     mutate({ ...data, image: data.image[0] });
   };
   return (
