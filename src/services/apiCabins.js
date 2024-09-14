@@ -10,19 +10,31 @@ export default async function getCabins() {
   return cabins;
 }
 
-export async function createCabin(newCabin) {
+export async function createEditCabin(newCabin, id) {
+  console.log(newCabin, id);
+  const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl); // boolean
   // https://cfhtzhgqirdokoimzrtg.supabase.co/storage/v1/object/public/cabin-images/cabin-004.jpg
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
     "/",
     ""
   );
-  const imagePath = `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
-  // 1. create cabin
+  const imagePath = hasImagePath
+    ? newCabin.image
+    : `${supabaseUrl}/storage/v1/object/public/cabin-images/${imageName}`;
 
-  const { data: cabinData, error: insertCabinError } = await supabase
-    .from("cabins")
-    .insert([{ ...newCabin, image: imagePath }])
-    .select();
+  // 1. create/edit cabin
+  let query = supabase.from("cabins");
+
+  // no id, then it is a create(insert) request
+  if (!id) query = query.insert([{ ...newCabin, image: imagePath }]);
+  // has id, it is an edit(update) request
+  if (id) query = query.update({ ...newCabin, image: imagePath }).eq("id", id);
+
+  // send the request
+  const { data: cabinData, error: insertCabinError } = await query
+    .select()
+    .single();
+
   if (insertCabinError) throw new Error("New cabin cannot be inserted!");
 
   // 2. no error, then upload the image
