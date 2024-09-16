@@ -38,7 +38,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       editCabin(
         { newCabin: { ...cabinData, image }, id: editId },
         {
-          onSuccess: (cabinData) => {
+          onSuccess: () => {
             reset();
             onCloseModal?.();
           },
@@ -48,7 +48,7 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
       createCabin(
         { ...cabinData, image: image },
         {
-          onSuccess: (cabinData) => {
+          onSuccess: () => {
             reset();
             onCloseModal?.();
           },
@@ -57,7 +57,10 @@ function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   };
   return (
     // 3. button click event call this onSubmit function, which calls the handleSubmt with customized submit in it, and the onError will be called if any Input is illegal
-    <Form onSubmit={handleSubmit(submit)}>
+    <Form
+      onSubmit={handleSubmit(submit)}
+      type={onCloseModal ? "modal" : "regular"}
+    >
       <FormRow label={"Cabin name"} error={errors?.name?.message}>
         <Input
           type="text"
