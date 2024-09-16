@@ -5,16 +5,17 @@ import CreateCabinForm from "./CreateCabinForm";
 
 function AddCabin() {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const handleCloseModal = () => {
+    setIsOpenModal((isOpenModal) => !isOpenModal);
+  };
   return (
     <div>
-      <Button onClick={() => setIsOpenModal((show) => !show)}>
+      <Button onClick={handleCloseModal}>
         {isOpenModal ? "Show Less" : "Add New Cabin"}
       </Button>
       {isOpenModal && (
-        <Modal onClose={() => setIsOpenModal((isOpenModal) => !isOpenModal)}>
-          <CreateCabinForm
-            onCloseModal={() => setIsOpenModal((isOpenModal) => !isOpenModal)}
-          />
+        <Modal onClose={handleCloseModal}>
+          <CreateCabinForm onCloseModal={handleCloseModal} />
         </Modal>
       )}
     </div>

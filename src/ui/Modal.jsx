@@ -2,6 +2,7 @@ import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { createPortal } from "react-dom";
+import { useRef } from "react";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -53,9 +54,15 @@ const Button = styled.button`
 `;
 
 function Modal({ children, onClose }) {
+  const modalRef = useRef();
+  const handleClickOutside = (e) => {
+    if (modalRef.current && !modalRef.current.contains(e.target)) {
+      onClose(); // Close modal when clicked outside
+    }
+  };
   return createPortal(
-    <Overlay>
-      <StyledModal>
+    <Overlay onClick={handleClickOutside}>
+      <StyledModal ref={modalRef}>
         <Button onClick={onClose}>
           <HiXMark />
         </Button>
