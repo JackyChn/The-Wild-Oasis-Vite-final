@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
 import { updateSetting } from "../../services/apiSettings";
+import toast from "react-hot-toast";
 
 export function useEditSettings() {
   const queryClient = useQueryClient();

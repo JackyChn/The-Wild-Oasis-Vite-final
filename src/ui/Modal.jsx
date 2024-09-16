@@ -1,4 +1,6 @@
+import { HiXMark } from "react-icons/hi2";
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -49,8 +51,22 @@ const Button = styled.button`
   }
 `;
 
-function Modal() {
-  return <StyledModal>Modal</StyledModal>;
+function Modal({ children, onClose }) {
+  return (
+    <Overlay>
+      <StyledModal>
+        <Button onClick={onClose}>
+          <HiXMark />
+        </Button>
+        <div>{children}</div>
+      </StyledModal>
+    </Overlay>
+  );
 }
+
+Modal.propTypes = {
+  children: PropTypes.node.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default Modal;

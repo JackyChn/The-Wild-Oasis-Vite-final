@@ -9,7 +9,7 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
-function CreateCabinForm({ cabinToEdit = {} }) {
+function CreateCabinForm({ cabinToEdit = {}, onCloseModal }) {
   const { id: editId, ...editValues } = cabinToEdit;
   const isEditSession = Boolean(editId);
 
@@ -37,9 +37,23 @@ function CreateCabinForm({ cabinToEdit = {} }) {
     if (isEditSession)
       editCabin(
         { newCabin: { ...cabinData, image }, id: editId },
-        { onSuccess: reset() }
+        {
+          onSuccess: (cabinData) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
       );
-    else createCabin({ ...cabinData, image: image }, { onSuccess: reset() });
+    else
+      createCabin(
+        { ...cabinData, image: image },
+        {
+          onSuccess: (cabinData) => {
+            reset();
+            onCloseModal?.();
+          },
+        }
+      );
   };
   return (
     // 3. button click event call this onSubmit function, which calls the handleSubmt with customized submit in it, and the onError will be called if any Input is illegal
@@ -133,7 +147,11 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isWorking}>
@@ -146,6 +164,7 @@ function CreateCabinForm({ cabinToEdit = {} }) {
 
 CreateCabinForm.propTypes = {
   cabinToEdit: PropTypes.object,
+  onCloseModal: PropTypes.func,
 };
 
 export default CreateCabinForm;
