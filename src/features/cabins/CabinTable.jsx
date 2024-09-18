@@ -31,16 +31,29 @@ const TableHeader = styled.header`
 function CabinTable() {
   const { isLoading, cabins } = useCabinQuery();
   const [searchParams] = useSearchParams();
-  if (isLoading) return <Spinner />;
+
+  // 1. filter logic
 
   const filterValue = searchParams.get("discount") || "all"; // first time come in, then show all
 
-  let filteredCabins;
-  if (filterValue === "all") filteredCabins = cabins;
+  let filteredCabins = cabins || [];
   if (filterValue === "discount")
-    filteredCabins = cabins.filter((cabin) => cabin.discount !== 0);
+    filteredCabins = cabins.filter((cabin) => cabin.discount !== 0) || [];
   if (filterValue === "no-discount")
-    filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+    filteredCabins = cabins.filter((cabin) => cabin.discount === 0) || [];
+
+  // 2. sort logic
+  const sortValue = searchParams.get("sortBy") || "price-asc";
+
+  const [field, direction] = sortValue.split("-");
+  const modifier = direction === "asc" ? 1 : -1;
+
+  const sortedCabins = filteredCabins.sort(
+    (a, b) => (a[field] - b[field]) * modifier
+  );
+  console.log("sortedCabins", sortedCabins);
+
+  if (isLoading) return <Spinner />;
   return (
     <Table role="table">
       <TableHeader>
@@ -51,7 +64,7 @@ function CabinTable() {
         <div>Discount</div>
         <div></div>
       </TableHeader>
-      {filteredCabins.map((cabin) => (
+      {sortedCabins.map((cabin) => (
         <CabinRow cabin={cabin} key={cabin.id} />
       ))}
     </Table>
