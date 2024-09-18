@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const StyledMenu = styled.div`
   display: flex;
@@ -60,3 +61,14 @@ const StyledButton = styled.button`
     transition: all 0.3s;
   }
 `;
+
+function Menus({ children }) {
+  return <div>{children}</div>;
+}
+
+Menus.propTypes = {
+  columns: PropTypes.string,
+  children: PropTypes.node,
+};
+
+export default Menus;
