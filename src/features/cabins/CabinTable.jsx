@@ -44,14 +44,11 @@ function CabinTable() {
 
   // 2. sort logic
   const sortValue = searchParams.get("sortBy") || "price-asc";
-
   const [field, direction] = sortValue.split("-");
   const modifier = direction === "asc" ? 1 : -1;
-
   const sortedCabins = filteredCabins.sort(
     (a, b) => (a[field] - b[field]) * modifier
   );
-  console.log("sortedCabins", sortedCabins);
 
   if (isLoading) return <Spinner />;
   return (

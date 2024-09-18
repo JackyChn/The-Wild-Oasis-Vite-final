@@ -17,10 +17,10 @@ function CabinTableOperations() {
       <p>Sort by:</p>
       <SortBy
         options={[
-          { value: "price-asc", label: "price (low-high)" },
-          { value: "price-dsc", label: "price (high-low)" },
-          { value: "capacity-asc", label: "capacity (low-high)" },
-          { value: "capacity-dsc", label: "capacity (high-low)" },
+          { value: "regularPrice-asc", label: "price (low-high)" },
+          { value: "regularPrice-dsc", label: "price (high-low)" },
+          { value: "maxCapacity-asc", label: "capacity (low-high)" },
+          { value: "maxCapacity-dsc", label: "capacity (high-low)" },
           { value: "name-asc", label: "name (A-Z)" },
           { value: "name-dsc", label: "name (Z-A)" },
         ]}
