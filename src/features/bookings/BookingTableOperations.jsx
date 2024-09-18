@@ -5,6 +5,7 @@ import TableOperations from "../../ui/TableOperations";
 function BookingTableOperations() {
   return (
     <TableOperations>
+      <p>Filter by:</p>
       <Filter
         filterField="status"
         options={[
@@ -14,16 +15,16 @@ function BookingTableOperations() {
           { value: "unconfirmed", label: "Unconfirmed" },
         ]}
       />
-
+      <p>Sort by:</p>
       <SortBy
         options={[
-          { value: "startDate-desc", label: "Sort by date (recent first)" },
-          { value: "startDate-asc", label: "Sort by date (earlier first)" },
+          { value: "startDate-dsc", label: "date (recent first)" },
+          { value: "startDate-asc", label: "date (earlier first)" },
           {
-            value: "totalPrice-desc",
-            label: "Sort by amount (high first)",
+            value: "totalPrice-dsc",
+            label: "amount (high first)",
           },
-          { value: "totalPrice-asc", label: "Sort by amount (low first)" },
+          { value: "totalPrice-asc", label: "amount (low first)" },
         ]}
       />
     </TableOperations>

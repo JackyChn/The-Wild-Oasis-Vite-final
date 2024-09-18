@@ -38,9 +38,7 @@ function CabinTable() {
   if (!cabins) return <Empty resourceName={"cabins"} />;
 
   // 1. filter logic
-
   const filterValue = searchParams.get("discount") || "all"; // first time come in, then show all
-
   let filteredCabins = cabins || [];
   if (filterValue === "discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount !== 0) || [];
@@ -69,7 +67,7 @@ function CabinTable() {
         </Table.Header>
 
         <Table.Body
-          data={cabins}
+          data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
       </Table>
