@@ -6,7 +6,7 @@ import Empty from "../../ui/Empty";
 function BookingTable() {
   const bookings = [];
 
-  if (!bookings.length) return <Empty resourceName={"bookings"} />;
+  if (!bookings || !bookings.length) return <Empty resourceName={"bookings"} />;
 
   // return (
   //   <Menus>
