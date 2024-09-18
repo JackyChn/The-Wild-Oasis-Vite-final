@@ -4,16 +4,15 @@ import CabinRow from "./CabinRow";
 import { useCabinQuery } from "../../hooks/useQuery hooks/useCabinQuery";
 import { useSearchParams } from "react-router-dom";
 import Empty from "../../ui/Empty";
-import Table from "../../ui/Table";
 
-// const Table = styled.div`
-//   border: 1px solid var(--color-grey-200);
+const Table = styled.div`
+  border: 1px solid var(--color-grey-200);
 
-//   font-size: 1.4rem;
-//   background-color: var(--color-grey-0);
-//   border-radius: 7px;
-//   overflow: hidden;
-// `;
+  font-size: 1.4rem;
+  background-color: var(--color-grey-0);
+  border-radius: 7px;
+  overflow: hidden;
+`;
 
 const TableHeader = styled.header`
   display: grid;
@@ -34,7 +33,7 @@ function CabinTable() {
   const { isLoading, cabins } = useCabinQuery();
   const [searchParams] = useSearchParams();
 
-  if (!cabins) return <Empty resourceName={"cabins"} />;
+  if (!cabins.length) return <Empty resourceName={"cabins"} />;
 
   // 1. filter logic
 
@@ -56,15 +55,15 @@ function CabinTable() {
 
   if (isLoading) return <Spinner />;
   return (
-    <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
-      <Table.Header>
+    <Table role="table">
+      <TableHeader>
         <div>Pic</div>
         <div>Cabin</div>
         <div>Capacity</div>
         <div>Price</div>
         <div>Discount</div>
         <div></div>
-      </Table.Header>
+      </TableHeader>
       {sortedCabins.map((cabin) => (
         <CabinRow cabin={cabin} key={cabin.id} />
       ))}
