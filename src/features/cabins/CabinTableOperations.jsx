@@ -4,7 +4,14 @@ import Filter from "../../ui/Filter";
 function CabinTableOperations() {
   return (
     <TableOperations>
-      <Filter />
+      <Filter
+        filterField={"discount"}
+        options={[
+          { value: "all", label: "all" },
+          { value: "discount", label: "Discount" },
+          { value: "no-discount", label: "No Discount" },
+        ]}
+      />
       {/* <Sort /> */}
     </TableOperations>
   );
