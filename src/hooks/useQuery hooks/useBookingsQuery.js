@@ -3,14 +3,14 @@ import { getBookings } from "../../services/apiBookings";
 import { useSearchParams } from "react-router-dom";
 
 export function useBookingsQuery() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
 
   // 1. filter logic
   const filterValue = searchParams.get("status");
   const filter =
     !filterValue || filterValue === "all"
       ? null
-      : { field: "status", value: filterValue, method: "gte" };
+      : { field: "status", value: filterValue };
 
   // 2. sortBy logic
   const sortByRaw = searchParams.get("sortBy") || "startDate-asc";
