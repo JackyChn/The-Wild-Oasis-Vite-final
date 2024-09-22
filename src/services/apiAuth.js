@@ -1,5 +1,4 @@
 import supabase from "./supabase";
-import PropTypes from "prop-types";
 
 export async function login({ email, password }) {
   let { data, error } = await supabase.auth.signInWithPassword({
@@ -13,7 +12,16 @@ export async function login({ email, password }) {
   return data;
 }
 
-login.propTypes = {
-  email: PropTypes.string,
-  pwd: PropTypes.string,
-};
+export async function getCurrentUser() {
+  // check if can get the session
+  const { data: session } = await supabase.auth.getSession();
+  if (!session.session) return null;
+
+  // indeed has session, then refetch the user again in secure
+  const { data, error } = await supabase.auth.getUser();
+  console.log(data);
+  if (error) {
+    throw new Error(error.message);
+  }
+  return data?.user;
+}

@@ -14,7 +14,15 @@ function LoginForm() {
   function handleSubmit(e) {
     e.preventDefault();
     if (!email || !password) return;
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          // part of the useMutation, but we have to set onSettled here to clear the email and pwd
+          setEmail(""), setPassword("");
+        },
+      }
+    );
   }
 
   return (
