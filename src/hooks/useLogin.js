@@ -9,9 +9,9 @@ export function useLogin() {
   const { mutate: login, isLoading: isLoggingin } = useMutation({
     mutationFn: ({ email, password }) => loginFn({ email, password }),
     onSuccess: (user) => {
-      toast.success("Login successfull!");
+      toast.success("Login success!");
       // queryClient.setQueriesData(["user"], user) ----> manually set some data
-      navigate("/dashboard");
+      navigate("/dashboard", { replace: true });
     },
     onError: (error) => {
       console.log(error.message);
