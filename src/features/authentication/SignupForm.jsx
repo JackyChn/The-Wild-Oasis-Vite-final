@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useSignup } from "../../hooks/CRUD hooks/useSignup";
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
@@ -9,8 +10,14 @@ import Input from "../../ui/Input";
 function SignupForm() {
   const { register, handleSubmit, getValues, formState, reset } = useForm();
   const { errors } = formState;
-  function submit(data) {
-    console.log(data);
+  const { isSigningup, signUp } = useSignup();
+  function submit({ fullName, email, password }) {
+    signUp(
+      { fullName, email, password },
+      {
+        onSettled: () => reset,
+      }
+    );
   }
   return (
     <Form onSubmit={handleSubmit(submit)}>
@@ -18,6 +25,7 @@ function SignupForm() {
         <Input
           type="text"
           id="fullName"
+          disabled={isSigningup}
           {...register("fullName", { required: "Name cannot be empty!" })}
         />
       </FormRow>
@@ -26,6 +34,7 @@ function SignupForm() {
         <Input
           type="email"
           id="email"
+          disabled={isSigningup}
           {...register("email", {
             required: "email cannot be empty!",
             pattern: {
@@ -43,6 +52,7 @@ function SignupForm() {
         <Input
           type="password"
           id="password"
+          disabled={isSigningup}
           {...register("password", {
             required: "password cannot be empty!",
             minLength: {
@@ -57,6 +67,7 @@ function SignupForm() {
         <Input
           type="password"
           id="passwordConfirm"
+          disabled={isSigningup}
           {...register("passwordConfirm", {
             required: "passwordConfirm cannot be empty!",
             minLength: {
@@ -71,10 +82,10 @@ function SignupForm() {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" disabled={isSigningup}>
           Cancel
         </Button>
-        <Button>Create new user</Button>
+        <Button disabled={isSigningup}>Create new user</Button>
       </FormRow>
     </Form>
   );
