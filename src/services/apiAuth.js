@@ -50,14 +50,14 @@ export async function logout() {
 export async function updateCurrentUser({ fullName, password, avatar }) {
   // 1. update password or fullName
   let updateUser;
-  if (password) updateUser = { password };
-  if (fullName) updateUser = { data: { fullName } };
+  if (password) updateUser = { password }; // has password, then it is a change password request
+  if (fullName) updateUser = { data: { fullName } }; // has full name, no password then it is a update user data request
   const { data: updatedUserNoAvatar, error: noAvatarUpdateError } =
     await supabase.auth.updateUser(updateUser);
   if (noAvatarUpdateError) throw new Error(noAvatarUpdateError.message);
-  if (!avatar) return updatedUserNoAvatar;
+  if (!avatar) return updatedUserNoAvatar; // no avatar to deal with
 
-  // 2. upload the avatar image to storage
+  // 2. has avatar file, upload the avatar image to storage
   const fileName = `avatar-${updatedUserNoAvatar.user.id}-${Math.random()}`;
   const { error: uploadAvatarError } = await supabase.storage
     .from("avatars")
