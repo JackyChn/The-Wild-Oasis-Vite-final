@@ -1,4 +1,4 @@
-import supabase from "./supabase";
+import supabase, { supabaseUrl } from "./supabase";
 
 export async function signUp({ fullName, email, password }) {
   const { data, error } = await supabase.auth.signUp({
@@ -45,4 +45,32 @@ export async function getCurrentUser() {
 export async function logout() {
   const { error } = await supabase.auth.signOut();
   if (error) throw new Error(error.message);
+}
+
+export async function updateCurrentUser({ fullName, password, avatar }) {
+  // 1. update password or fullName
+  let updateUser;
+  if (password) updateUser = { password };
+  if (fullName) updateUser = { data: { fullName } };
+  const { data: updatedUserNoAvatar, error: noAvatarUpdateError } =
+    await supabase.auth.updateUser(updateUser);
+  if (noAvatarUpdateError) throw new Error(noAvatarUpdateError.message);
+  if (!avatar) return updatedUserNoAvatar;
+
+  // 2. upload the avatar image to storage
+  const fileName = `avatar-${updatedUserNoAvatar.user.id}-${Math.random()}`;
+  const { error: uploadAvatarError } = await supabase.storage
+    .from("avatars")
+    .upload(fileName, avatar);
+  if (uploadAvatarError) throw new Error(uploadAvatarError.message);
+
+  // 3. update avatar in the user again
+  const { data: updatedUserWithAvatar, error: avatarUpdateError } =
+    await supabase.auth.updateUser({
+      data: {
+        avatar: `${supabaseUrl}/storage/v1/object/public/avatars/${fileName}`,
+      },
+    });
+  if (avatarUpdateError) throw new Error(avatarUpdateError.message);
+  return { updatedUserWithAvatar };
 }

@@ -22,7 +22,7 @@ const Avatar = styled.img`
 `;
 
 function UserAvatar() {
-  const { user } = useUser();
+  const { user } = useUser(); // from react query
   const { fullName, avatar } = user.user_metadata;
 
   return (
