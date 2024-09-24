@@ -19,7 +19,6 @@ export async function getCurrentUser() {
 
   // indeed has session, then refetch the user again in secure
   const { data, error } = await supabase.auth.getUser();
-  console.log(data);
   if (error) {
     throw new Error(error.message);
   }
