@@ -51,8 +51,8 @@ function Stats({ bookings, confirmedStays, numDays, cabinCount }) {
 }
 
 Stats.propTypes = {
-  bookings: PropTypes.array,
   confirmedStays: PropTypes.array,
+  bookings: PropTypes.array,
   numDays: PropTypes.number,
   cabinCount: PropTypes.number,
 };

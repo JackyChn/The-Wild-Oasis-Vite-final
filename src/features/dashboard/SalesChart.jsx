@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
+import PropTypes from "prop-types";
 import {
   Area,
   AreaChart,
@@ -145,5 +146,10 @@ function SalesChart({ bookings, numDays }) {
     </StyledSalesChart>
   );
 }
+
+SalesChart.protoTypes = {
+  bookings: PropTypes.array,
+  numDays: PropTypes.number,
+};
 
 export default SalesChart;
