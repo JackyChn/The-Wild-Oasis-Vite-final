@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { useUser } from "../../hooks/useQuery hooks/useUserQuery";
-import { useUpdateUser } from "../../hooks/CRUD hooks/useUpdateUser";
+import { useUser } from "../../hooks/R (useQuery) hooks/useUserQuery";
+import { useUpdateUser } from "../../hooks/CUD (useMutation) hooks/useUpdateUser";
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
